@@ -8,7 +8,8 @@ var xbeeAPI = new xbee_api.XBeeAPI({
   api_mode: 1
 });
 
-var serialport = new SerialPort("/dev/tty.usbserial-A702NVEB", {
+
+var serialport = new SerialPort("/dev/ttyUSB0", {
   baudrate: 9600,
   parser: xbeeAPI.rawParser()
 });
