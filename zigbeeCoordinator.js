@@ -16,7 +16,7 @@ function main() {
 function configComplete() {
 	var C = xbee_api.constants;
 	var xbeeAPI = new xbee_api.XBeeAPI({
-		api_mode: configuration.data.ZigBeeSerialConfiguration.APMode
+		api_mode: 2
 	});
 
 	var serialport = new SerialPort(
