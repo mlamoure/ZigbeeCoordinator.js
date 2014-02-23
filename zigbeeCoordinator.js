@@ -37,8 +37,8 @@ function configComplete() {
 
 	// All frames parsed by the XBee will be emitted here
 	xbeeAPI.on("frame_object", function(frame) {
-		console.log("OBJ> "+util.inspect(frame));
-	});    
+		console.log(">>", frame);
+	});
 }
 
 main();
