@@ -1,0 +1,15 @@
+{
+	"AWS": {
+		"defaultRegion": "us-east-1",
+		"accessKeyId": "",
+		"secretAccessKey": ""
+	},
+
+	"FakePublish": false,
+
+	"ZigBeeSerialConfiguration" : 
+	{
+		"SerialPort": "/dev/tty.usbserial-xxxx",
+		"BaudRate": 9600
+	}
+}
