@@ -1,6 +1,6 @@
 var util = require('util');
 var SerialPort = require('serialport').SerialPort;
-var xbee_api = require('../xbee-api/lib/xbee-api.js');
+var xbee_api = require('xbee-api.js');
 var path = require('path');
 var ZigbeeCoordinatorConfiguration = require("./zigbeeCoordinatorConfiguration.js");
 var configFileIncPath = path.join(__dirname + '/configuration.json');
@@ -16,7 +16,7 @@ function main() {
 function configComplete() {
 	var C = xbee_api.constants;
 	var xbeeAPI = new xbee_api.XBeeAPI({
-		api_mode: 2
+		api_mode: configuration.data.ZigBeeSerialConfiguration.APMode
 	});
 
 	var serialport = new SerialPort(
@@ -37,11 +37,6 @@ function configComplete() {
 
 	// All frames parsed by the XBee will be emitted here
 	xbeeAPI.on("frame_object", function(frame) {
-		console.log(">>", frame);
-	});
-
-	// All frames parsed by the XBee will be emitted here
-	xbeeAPI.on("frame_raw", function(frame) {
 		console.log(">>", frame);
 	});
 }
