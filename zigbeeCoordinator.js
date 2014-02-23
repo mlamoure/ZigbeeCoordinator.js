@@ -1,6 +1,6 @@
 var util = require('util');
 var SerialPort = require('serialport').SerialPort;
-var xbee_api = require('xbee-api');
+var xbee_api = require('../xbee-api/lib');
 var path = require('path');
 var ZigbeeCoordinatorConfiguration = require("./zigbeeCoordinatorConfiguration.js");
 var configFileIncPath = path.join(__dirname + '/configuration.json');
