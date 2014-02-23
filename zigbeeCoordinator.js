@@ -39,6 +39,11 @@ function configComplete() {
 	xbeeAPI.on("frame_object", function(frame) {
 		console.log(">>", frame);
 	});
+
+	// All frames parsed by the XBee will be emitted here
+	xbeeAPI.on("frame_raw", function(frame) {
+		console.log(">>", frame);
+	});
 }
 
 main();
