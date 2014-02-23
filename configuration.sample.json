@@ -6,10 +6,12 @@
 	},
 
 	"FakePublish": false,
+	"Debug": true,
 
 	"ZigBeeSerialConfiguration" : 
 	{
 		"SerialPort": "/dev/tty.usbserial-xxxx",
-		"BaudRate": 9600
+		"BaudRate": 9600,
+		"APMode": 2
 	}
 }
