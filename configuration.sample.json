@@ -13,5 +13,20 @@
 		"SerialPort": "/dev/tty.usbserial-xxxx",
 		"BaudRate": 9600,
 		"APMode": 2
-	}
+	},
+
+	"DeviceConfiguration" :	
+	[
+		{
+			"name": "DEVICE NAME",
+			"idField": "id",
+			"idValue": "DEVICE ID VALUE",
+			"PublishMethods": [
+				{
+					"method": "sns",
+					"AWSTopicARN": "arn:::"
+				}
+			]
+		}
+	]
 }

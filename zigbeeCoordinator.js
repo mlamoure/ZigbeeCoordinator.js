@@ -6,7 +6,7 @@ var path = require('path');
 var aws = require('aws-sdk');
 var AWS_SNS;
 
-var ZigbeeCoordinatorConfiguration = require("./zigbeeCoordinatorConfiguration.js");
+var JSONConfigurationController = require("./JSONConfigurationController.js");
 var configFileIncPath = path.join(__dirname + '/configuration.json');
 
 var configuration;
@@ -14,7 +14,7 @@ var C;
 var xbeeAPI;
 
 function main() {
-	configuration = new ZigbeeCoordinatorConfiguration();
+	configuration = new JSONConfigurationController();
 	configuration.setConfiguration(configFileIncPath);
 	configuration.on("configComplete", configComplete);
 }
@@ -52,10 +52,16 @@ function coordinateFrame(frame) {
 					// if the value of that attribute matches the value
 					if (payloadData[attributeName] == configuration.data.DeviceConfiguration[deviceConfigurations].idValue) {
 
-						// iterate through publication methods
+						// Now that we found the correct device, iterate through publication methods
 						for (alertMethod in configuration.data.DeviceConfiguration[deviceConfigurations].PublishMethods) {
 							if (configuration.data.DeviceConfiguration[deviceConfigurations].PublishMethods[alertMethod].method == "sns") {
-								publishSNS(JSON.stringify(payloadData), configuration.data.DeviceConfiguration[deviceConfigurations].PublishMethods[alertMethod].AWSTopicARN);
+								
+								if (!configuration.data.FakePublish) {
+									configuration.amazonSNSPublisher.publish(
+										configuration.data.DeviceConfiguration[deviceConfigurations].PublishMethods[alertMethod].AWSTopicARN,
+										JSON.stringify(payloadData)
+										);									
+								}
 								return;
 							}
 						}
@@ -66,32 +72,7 @@ function coordinateFrame(frame) {
 	}	
 }
 
-function publishSNS(message, topicArn) {
-	AWS_SNS.publish({
-	    'TopicArn': topicArn,
-	    'Message': message,
-	}, function (err, result) {
-	 
-		if (err !== null) {
-			console.log("** (" + getCurrentTime() + ") Sent a message and Amazon responded with an Error: " + util.inspect(err));
-			return;
-	    }
-		
-		console.log("** (" + getCurrentTime() + ") Sent a message and Amazon responded with: ");
-		console.log(result);
-	});
-}
-
 function configComplete() {
-	// configure AWS 
-	aws.config.update({
-		'region': 'us-east-1',
-	    'accessKeyId': configuration.data.AWS.accessKeyId,
-	    'secretAccessKey': configuration.data.AWS.secretAccessKey
-	});
-
-	AWS_SNS = new aws.SNS().client;
-
 	C = xbee_api.constants;
 	xbeeAPI = new xbee_api.XBeeAPI({
 		api_mode: configuration.data.ZigBeeSerialConfiguration.APMode

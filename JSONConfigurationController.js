@@ -5,8 +5,9 @@ var fs = require('fs');
 var path = require('path');
 var moment = require('moment');
 var schedule = require('node-schedule');
+var AmazonSNSPublisher = require('./amazonSNSPublisher.js');
 
-function ZigbeeCoordinatorConfiguration() {
+function JSONConfigurationController() {
 	var _self = this;
 	var _configFile;
 	var _configComplete = false;
@@ -14,6 +15,7 @@ function ZigbeeCoordinatorConfiguration() {
 	var _dateformat = "YYYY/MM/DD HH:mm:ss";
 	var _reCheckConfigurationJob;
 
+	this.amazonSNSPublisher;
 	this.data;
 
 	this.setConfiguration = function (configFile) {
@@ -71,6 +73,14 @@ function ZigbeeCoordinatorConfiguration() {
 				});
 			}
 
+			if (_self.data.AWS) {
+				_self.amazonSNSPublisher = new AmazonSNSPublisher();
+				_self.amazonSNSPublisher.configureAWSCredentials(
+					_self.data.AWS.defaultRegion, 
+					_self.data.AWS.accessKeyId,
+					_self.data.AWS.secretAccessKey);
+			}
+
 			_configComplete = true;
 
 			if (typeof(_configCompleteCallback) !== 'undefined') {
@@ -84,4 +94,4 @@ function ZigbeeCoordinatorConfiguration() {
 	}
 }
 
-module.exports = ZigbeeCoordinatorConfiguration;
+module.exports = JSONConfigurationController;

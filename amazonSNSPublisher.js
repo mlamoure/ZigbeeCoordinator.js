@@ -1,10 +1,10 @@
 
-function AmazonSNSPublisher(topic) {
+function AmazonSNSPublisher() {
 	var _self = this;
 	var _aws = require('aws-sdk');
 	var _util = require('util');
 	var _moment = require('moment');
-	var _topicARN = topic || 'none';
+	var _topicARN;
 	var _aws_sns;
 	var _dateformat = "YYYY/MM/DD HH:mm:ss";
 
@@ -19,9 +19,9 @@ function AmazonSNSPublisher(topic) {
 		_aws_sns = new _aws.SNS({sslEnabled: true}).client;
 	}
 
-	this.publish = function(message) {
+	this.publish = function(topic, message) {
 		_aws_sns.publish({
-		    'TopicArn': _topicARN,
+		    'TopicArn': topic,
 		    'Message': message,
 		}, function (err, result) {
 		 
