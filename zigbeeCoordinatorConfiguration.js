@@ -47,6 +47,10 @@ function ZigbeeCoordinatorConfiguration() {
 
 			try {
 				_self.data = JSON.parse(fileData);
+
+				if (_self.data.Debug) {
+					console.log("** (" + _self._getCurrentTime() + ") CONFIGURATION: DEBUG turned on");
+				}
 			}
 			catch (err) {
 				console.log("** (" + _self._getCurrentTime() + ") CONFIGURATION: Got an error.  Going to schedule a re-check in 3 minutes. Error: " + err);
